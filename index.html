@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cómo aplicar ISO 25010, 12207 y CMMI · Dossier de Calidad</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0a1628;--pn:#0f2038;--ln:#1f3c63;--cy:#22d3ee;--am:#fbbf24;--tx:#dbe7f5;--mu:#8aa4c2;--ok:#4ade80;--bad:#f87171}
+@media (prefers-color-scheme:light){:root{color-scheme:light;--bg:#f3f7fc;--pn:#fff;--ln:#c4d4e8;--cy:#0e7490;--am:#b45309;--tx:#0f2038;--mu:#4b6584;--ok:#15803d;--bad:#b91c1c}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 'Space Grotesk',system-ui,sans-serif;background-image:linear-gradient(var(--ln) 1px,transparent 1px),linear-gradient(90deg,var(--ln) 1px,transparent 1px);background-size:48px 48px;background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;background:var(--bg);opacity:.93;z-index:-1}
+.mono{font-family:'IBM Plex Mono',monospace}
+nav{position:sticky;top:0;z-index:5;background:var(--pn);border-bottom:1px solid var(--cy);display:flex;gap:4px;overflow-x:auto;padding:8px 12px}
+nav a{white-space:nowrap;color:var(--mu);text-decoration:none;font:500 13px 'IBM Plex Mono',monospace;padding:4px 10px;border:1px solid transparent}
+nav a:hover{color:var(--cy);border-color:var(--ln)}
+main{max-width:1120px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:clamp(28px,5vw,46px);line-height:1.1;margin:28px 0 12px;letter-spacing:-.02em}
+h2{font-size:28px;margin:0 0 6px;color:var(--cy)}
+h3{font-size:18px;margin:0 0 6px;color:var(--am)}
+p{max-width:80ch}
+.lead{color:var(--mu);font-size:18px}
+section{border-top:2px solid var(--cy);margin-top:48px;padding-top:20px}
+.tag{font:500 13px 'IBM Plex Mono',monospace;color:var(--am)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:16px 0}
+.box{background:var(--pn);border:1px solid var(--ln);border-left:3px solid var(--cy);padding:12px 16px}
+.box.am{border-left-color:var(--am)}
+.box h4{margin:0 0 4px;font-size:15px}
+.box p,.box li{font-size:14.5px;margin:4px 0}
+ol.steps{padding-left:22px}ol.steps li{margin:6px 0;max-width:90ch}
+ol.steps li::marker{color:var(--cy);font-family:'IBM Plex Mono',monospace}
+.tp{background:var(--pn);border:1px solid var(--ln);padding:16px;margin:24px 0}
+.meta{font-size:14px;color:var(--mu);margin:2px 0}
+.meta b{color:var(--tx)}
+.tw{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th{background:var(--bg);color:var(--cy);text-align:left;font:500 12.5px 'IBM Plex Mono',monospace;padding:8px;border:1px solid var(--ln)}
+td{border:1px solid var(--ln);padding:6px 8px;vertical-align:top;min-width:90px}
+td[contenteditable]:focus{outline:2px solid var(--am);outline-offset:-2px;background:rgba(251,191,36,.08)}
+td.lb{color:var(--am);font-weight:500;width:26%;background:var(--bg)}
+td.au{color:var(--ok);font-family:'IBM Plex Mono',monospace}
+button{font:500 13px 'IBM Plex Mono',monospace;background:transparent;color:var(--cy);border:1px solid var(--cy);padding:5px 12px;cursor:pointer;margin:4px 6px 0 0}
+button:hover{background:var(--cy);color:var(--bg)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--am);outline-offset:2px}
+.out{margin-top:8px;font:500 14px 'IBM Plex Mono',monospace;color:var(--am)}
+.ck label{display:block;padding:6px 0;border-bottom:1px dashed var(--ln);cursor:pointer}
+.ck input{accent-color:var(--cy);margin-right:10px;width:18px;height:18px;vertical-align:middle}
+details{margin:8px 0}summary{cursor:pointer;color:var(--cy)}
+.top{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+@media print{nav,button,.top{display:none}body{background:#fff;color:#000}.tp,.box{border-color:#999}td[contenteditable]{color:#000}}
+</style>
+</head>
+<body>
+<nav id="nav"></nav>
+<main>
+<header id="inicio">
+<span class="tag">Facultad de Ingeniería de Sistemas · Universidad Santo Tomás</span>
+<h1>Cómo aplicar ISO/IEC 25010, ISO/IEC/IEEE 12207 y CMMI en una empresa</h1>
+<p class="lead">Guía de trabajo con plantillas editables. Cada grupo parte de su empresa ficticia y construye, sesión a sesión, su Dossier de Calidad.</p>
+<div class="top"><button onclick="window.print()">Imprimir o guardar PDF</button><button onclick="expAll()">Descargar Dossier completo (CSV)</button><button onclick="clearAll()">Borrar todo mi trabajo</button></div>
+<div class="grid">
+<div class="box"><h4>Regla de oro</h4><p>Un modelo no se implementa «completo»: se implementa lo necesario para el contexto, con evidencia.</p></div>
+<div class="box am"><h4>Cómo se usa</h4><p>Haga clic en cualquier celda para escribir. Todo se guarda solo en este navegador. Use el mismo archivo y el mismo equipo durante todo el módulo.</p></div>
+<div class="box"><h4>Los datos son suyos</h4><p>Los ejemplos de NovaSoft Andina (clínicas odontológicas, Scrum, datos de salud) son solo referencia. Inventen cifras coherentes y justifíquenlas.</p></div>
+</div>
+<h3>Qué pregunta responde cada modelo</h3>
+<div class="tw"><table>
+<tr><th>Modelo</th><th>Pregunta</th><th>Qué le entrega a la empresa</th><th>Plantillas</th></tr>
+<tr><td>ISO/IEC 25010</td><td>¿Qué significa que mi software sea de calidad?</td><td>Características medibles de producto y calidad en uso</td><td>P2, P3</td></tr>
+<tr><td>ISO/IEC/IEEE 12207</td><td>¿Qué procesos debe tener mi ciclo de vida?</td><td>Procesos adaptables (tailoring)</td><td>P5, P6</td></tr>
+<tr><td>CMMI</td><td>¿Qué tan madura es mi organización para ejecutarlos?</td><td>Niveles de madurez y áreas de práctica</td><td>P7, P8</td></tr>
+</table></div>
+<h3>Ruta recomendada para una empresa pequeña</h3>
+<ol class="steps"><li><b>25010 primero:</b> definir qué calidad promete el producto.</li><li><b>12207 adaptado:</b> fijar los procesos mínimos para lograrla.</li><li><b>CMMI nivel 2:</b> consolidar gestión del proyecto y evidencias.</li><li><b>Nivel 3 en adelante:</b> solo si el negocio lo justifica.</li></ol>
+<p class="meta">Atajo: si el mayor dolor es la previsibilidad de los proyectos, empiece por CMMI nivel 2. Declare la edición que usa (25010 de 2011 o 2023; CMMI v1.3, 2.0 o 3.0): la lógica es la misma. CMMI no se «certifica», se evalúa.</p>
+</header>
+<div id="app"></div>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const ST=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+const SV=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const E=a=>a.map(x=>[x]);
+const KV={
+P1:['Nombre de la empresa','Producto (qué hace y para quién)','Tamaño del equipo y roles reales','Clientes y usuarios','Metodología que usan hoy','Nivel de riesgo (bajo, medio, alto) y por qué','Regulaciones o contratos aplicables','Dolor de calidad principal, con un dato','Objetivo de negocio que ayudaría a lograr la calidad'],
+P6:['Proceso (Gestión de la configuración o Verificación)','Propósito (un verbo, una frase)','Entradas','Actividades (5 a 8, numeradas)','Salidas','Roles (quién hace, aprueba, es informado)','Indicadores (al menos uno)','Herramientas','Ceremonia de la metodología donde ocurre','Registros que deja como evidencia']};
+
+const TP={
+P1:{t:'P1 · Ficha de la empresa',kv:'P1',ex:'Dolor: «el 25 % del esfuerzo de cada sprint se va en corregir errores que las clínicas detectan después de la entrega».',ok:'El dolor es específico y reaparece en P2, P7 y P15.',er:'Dolor genérico («queremos mejor calidad»).'},
+P2:{t:'P2 · Matriz de priorización ISO/IEC 25010',cols:['Característica','Importancia (1-5)','Riesgo si falla (consecuencia concreta)','Justificación (hecho de P1)'],pre:E(['Adecuación funcional','Eficiencia de desempeño','Compatibilidad','Usabilidad','Fiabilidad','Seguridad','Mantenibilidad','Portabilidad','Calidad en uso']),post:'p2',ex:'Seguridad | 5 | Fuga de datos de pacientes y sanciones | Ley 1581 de 2012 y contratos con clínicas.',ok:'Se nota que hubo decisión: unas características pesan más y se sabe por qué.',er:'Poner 5 a todo. Si todo es prioritario, nada lo es.'},
+P3:{t:'P3 · Catálogo de escenarios de calidad',cols:['ID','Característica y subcaracterística','Estímulo y contexto','Respuesta esperada','Medida y umbral'],n:5,ex:'EC-02 | Seguridad (confidencialidad) | Usuario sin rol clínico intenta abrir la ficha de otro paciente | Deniega, registra y alerta | 0 accesos exitosos; alerta ≤ 60 s.',ok:'Una prueba puede demostrar si se cumple, con número y sin adjetivos subjetivos.',er:'«Debe ser seguro» o «debe ser rápido».'},
+P5:{t:'P5 · Matriz de adaptación ISO/IEC/IEEE 12207 (tailoring)',cols:['Proceso','¿Aplica? (Sí/No)','Justificación (ligada a P1)','Evidencia: artefacto real','Responsable (rol)'],pre:E(['Requisitos de software','Arquitectura y diseño','Implementación','Integración','Verificación','Validación','Gestión de la configuración','Aseguramiento de calidad','Gestión de riesgos','Planificación y control del proyecto','Medición','Gestión de decisiones','Transición y despliegue','Mantenimiento','Gestión de recursos humanos','Adquisición y suministro','Disposición']),post:'p5',ex:'Disposición | No | El producto no tiene retiro previsto; se revisa en el plan anual | — | Gerente técnico.',ok:'Los «No» están justificados y los «Sí» tienen evidencia concreta.',er:'Marcar todo «Sí» por miedo a incumplir el estándar.'},
+P6a:{t:'P6 · Ficha de proceso 1',kv:'P6',ex:'Gestión de la configuración: rama por historia, solicitud de cambio con revisión, integrar solo con pruebas verdes, etiquetar cada versión. Indicador: cambios con revisión = 100 %.',ok:'Una persona que no estuvo en el equipo puede ejecutarla sin preguntar.',er:'Copiar la descripción del estándar sin adaptarla.'},
+P6b:{t:'P6 · Ficha de proceso 2',kv:'P6'},
+P7:{t:'P7 · Autodiagnóstico CMMI (nivel objetivo: 2)',cols:['Área de práctica','Nivel 0-3','Estado actual (hechos)','Brecha','Acción de mejora','Evidencia esperada','Responsable y fecha'],pre:E(['Gestión de requisitos','Estimación y planificación','Monitoreo y control','Aseguramiento de calidad (PQA)','Gestión de la configuración','Medición y análisis','Gestión de proveedores']),ex:'Gestión de la configuración | 2 | Git sin política de ramas | Falta línea base por versión | Definir flujo de ramas y etiquetar | Política y etiquetas | Líder técnico, 15 nov.',ok:'Toda calificación 2 o 3 apunta a un artefacto concreto; las acciones tienen dueño y fecha.',er:'Autoevaluarse con optimismo y sin evidencia.'},
+P8:{t:'P8 · Hoja de ruta de 12 meses',cols:['Trimestre','Foco','Actividades (máx. 3 hitos)','Resultado esperado','Indicador de éxito'],pre:[['T1','Diagnóstico, patrocinio y políticas'],['T2','Piloto en un proyecto'],['T3','Extensión a toda la organización y PQA'],['T4','Medición, revisión de dirección y decisión']],ex:'T2 | Piloto de requisitos, planificación y configuración | … | Un proyecto con evidencia completa | 100 % de historias del piloto con criterios y pruebas.',ok:'Alcanzable con el tamaño real del equipo; cada trimestre deja un resultado verificable.',er:'Cronogramas sin horas asignadas ni dueños.'},
+P13:{t:'P13 · Tabla de articulación modelo × metodología',cols:['Elemento de la metodología','Proceso 12207 (P5)','Característica 25010 (P3)','Área CMMI (P7)','Artefacto o evidencia que ya produce'],pre:E(['Product Backlog y criterios de aceptación','Sprint Planning','Definición de Hecho','Daily','Sprint Review','Retrospectiva','Incremento']),ex:'Definición de Hecho | Aseguramiento de calidad | Mantenibilidad y seguridad | PQA | DoD v1 con seis criterios y quality gate.',ok:'Ninguna fila sin evidencia; no hay documentos que no se usen.',er:'Llenar columnas con nombres de áreas sin decir qué artefacto lo evidencia.'},
+P14:{t:'P14 · Calificación del contexto',cols:['Factor','Calificación (1-5)','Justificación con hechos de P1'],pre:E(['Criticidad','Regulación','Tamaño y complejidad','Vida útil','Volatilidad de requisitos (aparte, no suma)']),post:'p14',ex:'NovaSoft: 4 + 4 + 3 + 4 = 15, rigor alto en seguridad y fiabilidad; volatilidad media, estilo iterativo.',ok:'Cada calificación se apoya en un hecho de P1.',er:'Subestimar la criticidad para justificar menos esfuerzo.'},
+P15:{t:'P15 · Portafolio de prácticas de calidad',cols:['Práctica','Riesgo que cubre (P2)','Costo (B/M/A, horas por sprint)','Evidencia','Indicador','Decisión','Justificación o condición'],n:8,ex:'Modelado de amenazas y pruebas de seguridad por versión | Fuga de datos | M | Informe y escaneo | Vulnerabilidades críticas = 0 | Adoptar.',ok:'Toda práctica adoptada cubre un riesgo; todo descarte tiene justificación; hay al menos tres aplazadas o descartadas.',er:'Adoptar todo el catálogo y no poder sostenerlo.'}};
+const CK=['El dolor de P1 aparece en P2, P7 y P15','Los «Sí» de P5 tienen evidencia y aparecen en P13','Toda calificación 2 o 3 de P7 apunta a un artefacto','La hoja de ruta P8 incluye las acciones de P7','Ninguna fila de P13 queda sin artefacto','P15 incluye al menos tres prácticas aplazadas o descartadas con razón','Conclusión de una página: ruta de 12 meses y tres riesgos con mitigación','Defensa de ocho minutos ensayada'];
+const S=[
+{id:'s1',n:'1 · P1',tag:'S1 · 30 min',t:'Punto de partida: la empresa y su dolor',i:'Todo el Dossier se deriva de esta ficha. Un dolor concreto guía cada decisión posterior.',st:['Describa el producto en dos frases: qué hace y para quién.','Declare el tamaño y los roles reales, no los deseables.','Anote la metodología que realmente usan hoy.','Califique el riesgo: bajo si una falla solo molesta, medio si causa pérdidas económicas, alto si compromete datos sensibles, dinero o personas.','Liste regulaciones y exigencias contractuales.','Escriba un dolor de calidad observable, con un dato si es posible.','Escriba el objetivo de negocio que mejorar la calidad ayudaría a lograr.'],d:'Abra con un caso de falla real (5 min). Cada grupo lee su dolor. Pregunta: ¿cuál modelo habría evitado esa falla y cuál no?',e:'Poner un dolor genérico, imposible de medir o priorizar.',tp:['P1']},
+{id:'s2',n:'2 · ISO 25010',tag:'S2 · 75 min',t:'ISO/IEC 25010: definir y medir la calidad del producto',i:'Es un modelo, no una metodología: dice qué medir, no cómo desarrollar. Incluye calidad del producto y calidad en uso (eficacia, eficiencia, satisfacción, libertad de riesgo, cobertura de contexto).',st:['Defina el objeto evaluado y los interesados (cliente, usuario, operaciones, regulador).','Priorice las características en P2: máximo tres con 5 y al menos una con 2 o menos, explicando por qué.','Traduzca las de 4 o 5 en escenarios de calidad (P3): estímulo + contexto + respuesta + medida con umbral numérico.','Integre los umbrales en criterios de aceptación, la definición de hecho y quality gates de integración continua.','Evalúe con ISO/IEC 25040 (establecer, especificar, diseñar, ejecutar, concluir) antes de cada versión mayor.','Convierta lo que esté fuera de umbral en acciones con responsable y fecha, y publique un tablero tipo semáforo.'],d:'Repaso de las ocho características con un ejemplo cotidiano (10 min), taller P2 y P3. Un grupo presenta un escenario y otro lo critica. Pregunta: ¿cómo probaría que cumple este requisito?',e:'Maximizar todas las características (hay trade-offs: más seguridad suele costar usabilidad); requisitos sin métrica; medir solo al final.',tp:['P2','P3']},
+{id:'s3',n:'3 · ISO 12207',tag:'S3 · 60 min',t:'ISO/IEC/IEEE 12207: ordenar los procesos con tailoring',i:'Define procesos con propósito, resultados y actividades. No impone un ciclo de vida: sirve para cascada, iterativo o ágil. Para empresas de hasta 25 personas puede justificarse ISO/IEC 29110 (perfil Basic).',st:['Defina el modelo de ciclo de vida (por ejemplo, iterativo con Scrum).','Complete la matriz P5: apunte a 12 a 15 procesos con «Sí», justifique cada «No» y escriba un artefacto real como evidencia.','Describa dos procesos en fichas P6 de una página (se sugieren Gestión de la configuración y Verificación).','Ancle cada proceso a una ceremonia o artefacto existente para no crear trabajo paralelo.','Haga un piloto en un proyecto durante dos o tres iteraciones.','Verifique el cumplimiento con revisiones por pares y una auditoría interna sencilla: ¿se hizo lo que dice la ficha?','Ajuste las fichas con las lecciones y extienda a los demás proyectos.'],d:'Anatomía de un proceso (10 min); P5 limitada a 20 min y dos fichas P6. Intercambio de fichas entre grupos. Pregunta: ¿qué proceso se puede eliminar sin perder calidad?',e:'Adoptar los más de treinta procesos por completitud; crear documentos que nadie usa; creer que 12207 obliga a cascada.',tp:['P5','P6a','P6b']},
+{id:'s4',n:'4 · CMMI',tag:'S4 · 75 min',t:'CMMI: diagnosticar brechas y planear la madurez',i:'Es un marco: dice qué prácticas debe haber, no cómo hacerlas. Capacidad mide un área concreta; madurez mide toda la organización. Para una empresa pequeña, el nivel 2 es una meta realista.',st:['Alinee con el negocio: ¿para qué se busca el nivel? (ganar contratos, reducir retrabajo).','Conforme patrocinio y equipo: un patrocinador, un grupo de procesos de 2 o 3 personas con horas asignadas y un champion por equipo.','Defina el alcance y el nivel objetivo (nivel 2; el nivel 3 en una segunda fase).','Haga el autodiagnóstico P7 con la escala 0 a 3 y exija evidencia para cada 2 o 3.','Priorice las brechas por impacto y esfuerzo y construya la hoja de ruta P8: máximo tres hitos por trimestre y un indicador por trimestre.','Haga un piloto, luego institucionalice con políticas, roles, capacitación, recursos y seguimiento de la dirección.','Mida y revise con la dirección. La evaluación formal es opcional y solo si el negocio la exige.'],d:'Niveles de madurez con una analogía (10 min); P7 y P8. Cada grupo defiende la calificación de dos áreas. Pregunta: ¿qué evidencia le mostraría a un evaluador?',e:'Perseguir el nivel por el cartel; documentar mucho y practicar poco; creer que CMMI exige cascada.',x:'<details><summary>Escala de P7 y prácticas genéricas GP 2.1 a 2.10 (lista de verificación de «institucionalizada»)</summary><p class="meta">0 no existe · 1 parcial y dependiente de personas · 2 se hace pero no de forma consistente · 3 institucionalizada. GP 2.1 política · 2.2 plan · 2.3 recursos · 2.4 responsabilidades · 2.5 capacitación · 2.6 control de productos · 2.7 interesados · 2.8 monitoreo y control · 2.9 evaluación objetiva (auditorías PQA) · 2.10 revisión con la dirección.</p><p class="meta">Áreas de nivel 2 (v1.3): requisitos, planificación, monitoreo y control, medición y análisis, PQA, configuración y proveedores.</p></details>',tp:['P7','P8']},
+{id:'s6',n:'6 · Articulación',tag:'S6 · 75 min',t:'Articular los modelos con la metodología',i:'El modelo dice qué lograr; la metodología dice cómo organizar el trabajo. Se ancla cada exigencia a un artefacto o ceremonia que ya existe. Escriba en la primera columna los elementos reales (Scrum, o para Kanban: tablero, límites WIP, políticas por columna).',st:['Liste las prácticas y artefactos que la empresa ya usa.','Liste las exigencias ya definidas: escenarios de P3, procesos de P5, brechas de P7.','Ancle cada exigencia a un artefacto o ceremonia; si no hay dónde, cree el artefacto más pequeño posible (una lista de seis criterios, no un manual).','Elimine redundancias: dos documentos que dicen lo mismo.','Detecte vacíos y decida si se cubren o se justifica no cubrirlos.','Haga la prueba de escritorio: ¿una persona nueva sabría qué hacer en un sprint solo con esta tabla?'],d:'Mitos de ágil y calidad (10 min); P13 con prueba de escritorio con un compañero nuevo. Intercambio de tablas entre grupos. Pregunta: ¿qué reunión o artefacto sobra y cuál falta?',e:'Pensar que ágil no necesita procesos o que más documentos equivalen a más calidad.',tp:['P13']},
+{id:'s7',n:'7 · Prácticas',tag:'S7 · 105 min',t:'Seleccionar prácticas según el contexto y defender',i:'Rigor proporcional al riesgo: una práctica es buena si reduce un riesgo real a un costo razonable. Una práctica completa tiene política, procedimiento, evidencia e indicador.',st:['Caracterice el proyecto con los cuatro factores de P14.','Identifique riesgos de calidad: qué podría salir mal y qué costaría.','Priorice las características de 25010 asociadas a esos riesgos.','Fije el rigor (ligero, estándar o alto) y el estilo (adaptativo si la volatilidad es alta).','Elija prácticas del catálogo en P15: cada una justifica riesgo, costo y evidencia; incluya al menos tres aplazadas o descartadas.','Defina indicadores y una revisión trimestral: mantener, reforzar o retirar.'],d:'0 a 15 contexto · 15 a 45 portafolio · 45 a 60 revisión cruzada (otro grupo cuestiona tres decisiones) · 60 a 95 defensas de 8 min · 95 a 105 cierre. Jurado: ¿qué riesgo cubre?, ¿qué pasa si no la aplican?, ¿cómo sabrían que funciona?, ¿qué eliminarían con la mitad del presupuesto?',e:'Subestimar la criticidad; adoptar todo el catálogo.',x:'<details><summary>Catálogo de prácticas y árbol de decisión</summary><p class="meta"><b>Catálogo:</b> revisiones por pares y de código · integración continua con quality gates · TDD/BDD y pirámide de pruebas · análisis estático · pruebas de carga · modelado de amenazas y SAST/DAST · pruebas de usabilidad y accesibilidad · gestión de configuración y trazabilidad · gestión de riesgos · auditorías de proceso (PQA) · observabilidad · gestión de deuda técnica · retrospectivas con métricas · análisis de peligros (solo si hay riesgo para personas).</p><p class="meta"><b>Árbol:</b> ¿puede dañar personas? rigor alto con verificación formal · ¿hay regulación o contrato con evidencia auditable? rigor estándar a alto · ¿requisitos cambian cada semana y riesgo bajo? ciclos cortos y automatización mínima · ¿vivirá años? invierta en mantenibilidad y configuración desde el inicio.</p></details><p class="meta"><b>Rigor (heurística didáctica):</b> suma de los 4 factores: 4 a 8 ligero · 9 a 14 estándar · 15 a 20 alto.</p>',tp:['P14','P15','P16']}];
+const RM={};
+function tplHtml(id){
+ const d=TP[id];let h='<div class="tp" id="t-'+id+'"><h3>'+d.t+'</h3>';
+ if(d.ex)h+='<p class="meta"><b>Ejemplo:</b> '+esc(d.ex)+'</p><p class="meta"><b>Criterio de calidad:</b> '+esc(d.ok)+' <b>Error frecuente:</b> '+esc(d.er)+'</p>';
+ h+='<div class="tw"><table></table></div>';
+ if(!d.kv)h+='<button data-a="add">+ Fila</button>';
+ h+='<button data-a="csv">Descargar CSV</button><button data-a="clr">Limpiar plantilla</button><div class="out"></div></div>';return h}
+function cols(d){return d.kv?['Campo','Contenido']:d.cols}
+function initRows(id){const d=TP[id];if(d.kv)return KV[d.kv].map(k=>[k,'']);
+ const w=d.cols.length;let r=(d.pre||Array.from({length:d.n||3},()=>[])).map(x=>x.concat(Array(w-x.length).fill('')));return r}
+function draw(id){const d=TP[id],box=$('#t-'+id),rows=RM[id],cs=cols(d);
+ let h='<tr>'+cs.map(c=>'<th>'+c+'</th>').join('')+(d.kv?'':'<th></th>')+'</tr>';
+ rows.forEach((r,i)=>{h+='<tr>'+r.map((v,j)=>{const lb=d.kv&&j==0,au=d.auto&&d.auto.includes(j);
+  return '<td'+(lb?' class="lb"':au?' class="au"':' contenteditable="true"')+' data-i="'+i+'" data-j="'+j+'">'+esc(v)+'</td>'}).join('')+(d.kv?'':'<td><button data-a="del" data-i="'+i+'" aria-label="Eliminar fila">×</button></td>')+'</tr>'});
+ box.querySelector('table').innerHTML=h;post(id)}
+function post(id){const d=TP[id],rows=RM[id],o=$('#t-'+id+' .out');if(!d.post){return}
+ const num=v=>parseFloat(String(v).replace(',','.'));let m='';
+ if(d.post=='p2'){const c5=rows.filter(r=>num(r[1])==5).length,lo=rows.filter(r=>r[1]!==''&&num(r[1])<=2).length;m='Con 5: '+c5+' (máx. 3) · Con 2 o menos: '+lo+' (mín. 1) '+(c5>3||(rows.some(r=>r[1]!=='')&&lo<1)?'→ revise la distribución':'')}
+ if(d.post=='p5'){const s=rows.filter(r=>/^s[ií]/i.test(r[1].trim())).length;m='Procesos con «Sí»: '+s+' (meta 12 a 15)'+(s&&(s<12||s>15)?' → ajuste':'')}
+ if(d.post=='p14'){let s=0,k=0;rows.slice(0,4).forEach(r=>{const v=num(r[1]);if(v>=1&&v<=5){s+=v;k++}});m=k==4?'Total: '+s+' → '+(s>=15?'rigor ALTO':s>=9?'rigor ESTÁNDAR':'rigor LIGERO'):'Califique los cuatro factores para ver el nivel de rigor (total actual: '+s+')'}
+ o.textContent=m}
+function csv(id){const d=TP[id];const q=v=>'"'+String(v).replace(/"/g,'""')+'"';return [cols(d).map(q).join(',')].concat(RM[id].map(r=>r.map(q).join(','))).join('\n')}
+function dl(name,txt){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+txt],{type:'text/csv'}));a.download=name;a.click()}
+function expAll(){dl('dossier-calidad.csv',Object.keys(TP).map(id=>'# '+TP[id].t+'\n'+csv(id)).join('\n\n')+'\n\n# P16\n'+CK.map((c,i)=>'"'+c+'",'+(ST('qd:ck')||[])[i]).join('\n'))}
+function clearAll(){if(confirm('Se borrará todo lo escrito en este navegador. ¿Continuar?')){try{Object.keys(localStorage).filter(k=>k.startsWith('qd:')).forEach(k=>localStorage.removeItem(k))}catch(e){}location.reload()}}
+const app=$('#app');
+app.innerHTML=S.map(s=>'<section id="'+s.id+'"><span class="tag">'+s.tag+'</span><h2>'+s.t+'</h2><p>'+s.i+'</p><h3>Paso a paso</h3><ol class="steps">'+s.st.map(x=>'<li>'+x+'</li>').join('')+'</ol>'+(s.x||'')+'<div class="grid"><div class="box"><h4>Dinámica en clase</h4><p>'+s.d+'</p></div><div class="box am"><h4>Errores frecuentes</h4><p>'+s.e+'</p></div></div>'+s.tp.map(id=>id=='P16'?'<div class="tp ck" id="t-P16"><h3>P16 · Lista de verificación del Dossier</h3><p class="meta">Marque solo con evidencia en la plantilla. Además, redacte la conclusión de una página y ensaye la defensa.</p>'+CK.map((c,i)=>'<label><input type="checkbox" data-k="'+i+'">'+c+'</label>').join('')+'</div>':tplHtml(id)).join('')+'</section>').join('');
+$('#nav').innerHTML='<a href="#inicio">Inicio</a>'+S.map(s=>'<a href="#'+s.id+'">'+s.n+'</a>').join('');
+Object.keys(TP).forEach(id=>{RM[id]=ST('qd:'+id)||initRows(id);draw(id)});
+const ck=ST('qd:ck')||[];document.querySelectorAll('[data-k]').forEach(c=>{c.checked=!!ck[c.dataset.k];c.onchange=()=>{ck[c.dataset.k]=c.checked;SV('qd:ck',ck)}});
+app.addEventListener('input',e=>{const td=e.target.closest('td[contenteditable]');if(!td)return;const id=td.closest('.tp').id.slice(2);RM[id][td.dataset.i][td.dataset.j]=td.innerText.trim();SV('qd:'+id,RM[id]);post(id)});
+app.addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;const id=b.closest('.tp').id.slice(2),a=b.dataset.a;
+ if(a=='add'){RM[id].push(Array(cols(TP[id]).length).fill(''))}
+ if(a=='del'){RM[id].splice(+b.dataset.i,1)}
+ if(a=='clr'){if(!confirm('¿Limpiar esta plantilla?'))return;RM[id]=initRows(id)}
+ if(a=='csv'){dl(id+'.csv',csv(id));return}
+ SV('qd:'+id,RM[id]);draw(id)});
+</script>
+</body>
+</html>
